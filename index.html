@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GHAT TAK 3D — The Ghat at Golden Hour</title>
+<meta name="description" content="An interactive 3D Chhath ghat at golden hour, built with Aholo Lux3D assets in a Three.js scene." />
+<style>
+  :root { color-scheme: dark; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; background: #1c1410; }
+  body { font-family: Georgia, 'Times New Roman', serif; }
+  #scene { position: fixed; inset: 0; display: block; }
+
+  .card {
+    position: fixed; z-index: 10; color: #f7e8d3;
+    text-shadow: 0 1px 12px rgba(0,0,0,.55);
+    pointer-events: none;
+  }
+  #title-card { top: 28px; left: 32px; max-width: 430px; }
+  #title-card .kicker {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 11px; letter-spacing: .34em; text-transform: uppercase;
+    color: #ffcf87; margin-bottom: 10px;
+  }
+  #title-card h1 { font-size: 34px; font-weight: 600; line-height: 1.12; }
+  #title-card p { margin-top: 10px; font-size: 15px; line-height: 1.55; color: #f3ddba; }
+
+  #hint {
+    bottom: 24px; left: 32px;
+    font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12.5px;
+    letter-spacing: .04em; color: #ffe9c4;
+    background: rgba(28, 16, 8, .38); border: 1px solid rgba(255, 207, 135, .25);
+    padding: 8px 14px; border-radius: 999px; backdrop-filter: blur(6px);
+  }
+  #credit {
+    bottom: 24px; right: 32px; text-align: right;
+    font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; color: #f3ddba;
+  }
+  #credit b { color: #ffcf87; font-weight: 600; }
+  body.clean .card { display: none; } /* append ?clean=1 for filming */
+
+  #hotspots { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+  body.clean #hotspots { display: none; }
+  .hotspot { position: absolute; transform: translate(-50%, -50%); pointer-events: none; }
+  .hotspot-dot {
+    pointer-events: auto; cursor: pointer;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid rgba(255, 207, 135, .9);
+    background: rgba(255, 170, 80, .28);
+    box-shadow: 0 0 0 5px rgba(255, 170, 80, .12), 0 0 14px rgba(255, 160, 70, .45);
+    transition: background .2s ease, transform .2s ease;
+  }
+  .hotspot-dot:hover, .hotspot.open .hotspot-dot { background: rgba(255, 180, 90, .6); transform: scale(1.12); }
+  .hotspot-card {
+    position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(4px);
+    width: 230px; padding: 12px 14px; border-radius: 12px;
+    background: rgba(26, 15, 8, .82); border: 1px solid rgba(255, 207, 135, .3);
+    backdrop-filter: blur(8px); color: #f7e8d3;
+    opacity: 0; pointer-events: none; transition: opacity .22s ease, transform .22s ease;
+  }
+  .hotspot.open .hotspot-card { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .hotspot-card h3 {
+    font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase; color: #ffcf87; margin-bottom: 5px;
+  }
+  .hotspot-card p { font-size: 13.5px; line-height: 1.5; color: #f3ddba; }
+  @media (max-width: 640px) {
+    #title-card { left: 20px; top: 20px; max-width: 300px; }
+    #title-card h1 { font-size: 25px; }
+    #hint, #credit { display: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<div class="card" id="title-card">
+  <div class="kicker">Ghat Tak 3D</div>
+  <h1>The Ghat at Golden Hour</h1>
+  <p>Evening arghya on the river steps — the soop is laid, the sugarcane stands
+     ready, and the sun is about to touch the water.</p>
+</div>
+
+<div id="hotspots"></div>
+
+<div class="card" id="hint">Drag to look around &nbsp;·&nbsp; Scroll to zoom &nbsp;·&nbsp; Tap a gold marker for its story &nbsp;·&nbsp; Leave it, and the camera drifts on its own</div>
+<div class="card" id="credit">Assets generated with <b>Aholo Lux3D</b> · Scene in <b>Three.js</b></div>
+
+<script>
+  if (new URLSearchParams(location.search).has('clean')) document.body.classList.add('clean');
+</script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
