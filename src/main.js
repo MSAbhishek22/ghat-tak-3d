@@ -23,10 +23,10 @@ const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0xdd9a5f, 55, 240); // warm golden haze
 
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 900);
-camera.position.set(13.5, 6.8, -15);
+camera.position.set(10, 14, -25);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 2.1, 13);
+controls.target.set(-2.5, 5.2, 7);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
 controls.minDistance = 7;
@@ -118,10 +118,18 @@ sunLight.shadow.camera.near = 20; sunLight.shadow.camera.far = 180;
 sunLight.shadow.bias = -0.0004;
 scene.add(sunLight, sunLight.target);
 
-scene.add(new THREE.HemisphereLight(0xffd9a3, 0x4a322b, 0.85));
+scene.add(new THREE.HemisphereLight(0xffd9a3, 0x4a322b, 1.0));
 const bounce = new THREE.PointLight(0xff9a4d, 12, 30, 1.8); // warm bounce off the water
 bounce.position.set(0, 1.2, 16);
 scene.add(bounce);
+
+// Warm fill from the camera side — the sun backlights the ghat, so without
+// this the Lux3D models read as silhouettes. Low and warm: the golden mood
+// stays, but carved stone and fruit textures stay readable.
+const fill = new THREE.DirectionalLight(0xffbe78, 1.05);
+fill.position.set(14, 13, -30);
+fill.target.position.set(-2, 2, 4);
+scene.add(fill, fill.target);
 
 /* ------------------------------ ground & river ----------------------------- */
 
